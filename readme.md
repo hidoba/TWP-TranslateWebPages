@@ -3,15 +3,33 @@
 
 Translate your page in real time using Google, Bing, Yandex, or an optional OpenRouter provider.
 
+[![Fork release](https://img.shields.io/github/v/release/hidoba/TWP-TranslateWebPages?label=fork%20release)](https://github.com/hidoba/TWP-TranslateWebPages/releases/tag/v10.1.5.1-openrouter)
 [![GitHub release (latest SemVer)](https://img.shields.io/github/v/release/FilipePS/Traduzir-paginas-web?label=latest%20version&sort=semver)](https://github.com/FilipePS/Traduzir-paginas-web/releases)
 [![GitHub release date](https://img.shields.io/github/release-date/FilipePS/Traduzir-paginas-web?labely)](https://github.com/FilipePS/Traduzir-paginas-web/latest)
 [![GitHub issues](https://img.shields.io/github/issues/FilipePS/Traduzir-paginas-web?color=red)](https://github.com/FilipePS/Traduzir-paginas-web/issues)
 [![GitHub license](https://img.shields.io/github/license/FilipePS/Traduzir-paginas-web?color=lightgrey)](https://github.com/FilipePS/Traduzir-paginas-web/blob/master/LICENSE)
 
+## About this fork
+
+This fork keeps a manual browser build available while the upstream project does not yet publish an official Chromium-based browser package, and it adds an experimental OpenRouter translation service that can be proposed upstream separately.
+
+OpenRouter can be used for both page translation and selected/text translation after adding your own OpenRouter API key in the extension settings. Page translation uses structured JSON output so translated page fragments can be matched back to the correct original text.
+
+The current fork release is [Version 10.1.5.1 OpenRouter](https://github.com/hidoba/TWP-TranslateWebPages/releases/tag/v10.1.5.1-openrouter):
+- [TWP_10.1.5.1_Chromium.zip](https://github.com/hidoba/TWP-TranslateWebPages/releases/download/v10.1.5.1-openrouter/TWP_10.1.5.1_Chromium.zip) for Brave, Chrome, Edge, Vivaldi, Opera, and other Chromium-based browsers.
+- [TWP_10.1.5.1_Firefox.zip](https://github.com/hidoba/TWP-TranslateWebPages/releases/download/v10.1.5.1-openrouter/TWP_10.1.5.1_Firefox.zip) for Firefox.
+
+Test notes:
+- Brave was tested with the `google/gemini-3-flash-preview` OpenRouter model.
+- Firefox is included in the release, but it has not been tested by this fork because I use Brave.
+
+Caution: Not all OpenRouter models / providers may support JSON structured output. If translation fails with one model, try a model/provider that supports structured JSON outputs.
+
 ## Install
 
 ### Firefox
 - Desktop users, download from [Mozilla Addons](https://addons.mozilla.org/firefox/addon/traduzir-paginas-web/).
+- This fork also publishes a Firefox zip in the [OpenRouter release](https://github.com/hidoba/TWP-TranslateWebPages/releases/tag/v10.1.5.1-openrouter), but that Firefox package is not tested by this fork.
 - Android users
   1. Install the latest version of _Firefox (v120+)_.
   2. Open the extension manager.
@@ -19,8 +37,9 @@ Translate your page in real time using Google, Bing, Yandex, or an optional Open
   4. On the add-ons website, search for **TWP**.
   5. Install the **TWP - Translate For Mobile** extension.
 
-### Chrome, Edge and Brave
-- The extension will be officially released for these browsers in the future.
+### Brave, Chrome, Edge, Vivaldi and Opera
+- Download this fork's [Chromium package](https://github.com/hidoba/TWP-TranslateWebPages/releases/download/v10.1.5.1-openrouter/TWP_10.1.5.1_Chromium.zip) from the [OpenRouter release](https://github.com/hidoba/TWP-TranslateWebPages/releases/tag/v10.1.5.1-openrouter).
+- The upstream extension will be officially released for these browsers in the future.
 - If you installed the extension in these browsers previously through a registry modification, please undo those changes.\
 Note: If you want to undo registry changes, download and run this [twp-registry-uninstall-self.reg](https://raw.githubusercontent.com/FilipePS/Traduzir-paginas-web/master/dist/chromium/twp-registry-uninstall-self.reg). If you want a deeper removal download and run this other file [twp-registry-uninstall-all.reg](https://raw.githubusercontent.com/FilipePS/Traduzir-paginas-web/master/dist/chromium/twp-registry-uninstall-all.reg)
 
@@ -71,4 +90,7 @@ OpenRouter uses the `openrouter/auto` model by default, but you can enter a diff
 Some pages like [support.mozilla.org](https://support.mozilla.org/) and [addons.mozilla.org](http://addons.mozilla.org/) will not be translated. For security reasons, the browser blocks extensions from accessing these sites.
 
 ## Build instructions
-- You can see all the build instructions in the [build-instructions.md](build-instructions.md) file.
+- Install dependencies with `npm install`.
+- Build both browser packages with `npm run build`.
+- The build outputs are written to `build/TWP_10.1.5.1_Chromium.zip` and `build/TWP_10.1.5.1_Firefox.zip`.
+- You can see the full build instructions in the [build-instructions.md](build-instructions.md) file.
