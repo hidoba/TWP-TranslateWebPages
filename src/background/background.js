@@ -1,5 +1,10 @@
 "use strict";
 
+const twpIsMV3 = chrome.runtime.getManifest().manifest_version >= 3;
+const twpActionMenuContext = twpIsMV3 ? "action" : "browser_action";
+const twpPageActionMenuContext = twpIsMV3 ? "action" : "page_action";
+const twpHasSeparatePageAction = !twpIsMV3 && !!chrome.pageAction;
+
 // get mimetype
 var tabToMimeType = {};
 chrome.webRequest.onHeadersReceived.addListener(
@@ -362,33 +367,41 @@ if (typeof chrome.contextMenus !== "undefined") {
     chrome.contextMenus.create({
       id: "browserAction-showPopup",
       title: twpI18n.getMessage("btnShowPopup"),
-      contexts: ["browser_action"],
+      contexts: [twpActionMenuContext],
     });
-    chrome.contextMenus.create({
-      id: "pageAction-showPopup",
-      title: twpI18n.getMessage("btnShowPopup"),
-      contexts: ["page_action"],
-    });
+    if (twpHasSeparatePageAction) {
+      chrome.contextMenus.create({
+        id: "pageAction-showPopup",
+        title: twpI18n.getMessage("btnShowPopup"),
+        contexts: [twpPageActionMenuContext],
+      });
+    }
     chrome.contextMenus.create({
       id: "never-translate",
       title: twpI18n.getMessage("btnNeverTranslate"),
-      contexts: ["browser_action", "page_action"],
+      contexts: twpHasSeparatePageAction
+        ? [twpActionMenuContext, twpPageActionMenuContext]
+        : [twpActionMenuContext],
     });
     chrome.contextMenus.create({
       id: "more-options",
       title: twpI18n.getMessage("btnMoreOptions"),
-      contexts: ["browser_action", "page_action"],
+      contexts: twpHasSeparatePageAction
+        ? [twpActionMenuContext, twpPageActionMenuContext]
+        : [twpActionMenuContext],
     });
     chrome.contextMenus.create({
       id: "browserAction-translate-pdf",
       title: twpI18n.getMessage("msgTranslatePDF"),
-      contexts: ["browser_action"],
+      contexts: [twpActionMenuContext],
     });
-    chrome.contextMenus.create({
-      id: "pageAction-translate-pdf",
-      title: twpI18n.getMessage("msgTranslatePDF"),
-      contexts: ["page_action"],
-    });
+    if (twpHasSeparatePageAction) {
+      chrome.contextMenus.create({
+        id: "pageAction-translate-pdf",
+        title: twpI18n.getMessage("msgTranslatePDF"),
+        contexts: [twpPageActionMenuContext],
+      });
+    }
   };
   updateActionContextMenu();
 
@@ -695,16 +708,20 @@ twpConfig.onReady(() => {
       }
 
       let darkMode = false;
-      darkMode = matchMedia("(prefers-color-scheme: dark)").matches;
+      darkMode =
+        typeof matchMedia === "function" &&
+        matchMedia("(prefers-color-scheme: dark)").matches;
       updateIconInAllTabs();
 
-      matchMedia("(prefers-color-scheme: dark)").addEventListener(
-        "change",
-        () => {
-          darkMode = matchMedia("(prefers-color-scheme: dark)").matches;
-          updateIconInAllTabs();
-        }
-      );
+      if (typeof matchMedia === "function") {
+        matchMedia("(prefers-color-scheme: dark)").addEventListener(
+          "change",
+          () => {
+            darkMode = matchMedia("(prefers-color-scheme: dark)").matches;
+            updateIconInAllTabs();
+          }
+        );
+      }
 
       function getSVGIcon(incognito = false) {
         const svgXml = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
@@ -810,6 +827,10 @@ twpConfig.onReady(() => {
       }
 
       function standardize_color(str1, str2, str3) {
+        if (typeof OffscreenCanvas === "undefined") {
+          return str3 || str2 || str1;
+        }
+
         var ctx = new OffscreenCanvas(1, 1).getContext("2d");
         ctx.imageSmoothingEnabled = false;
         ctx.fillStyle = str1;

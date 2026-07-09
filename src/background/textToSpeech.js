@@ -2,6 +2,8 @@
 
 const textToSpeech = (function () {
   const textToSpeech = {};
+  const offscreenTarget = "twp-offscreen-text-to-speech";
+  const isOffscreenDocument = globalThis.twpOffscreenDocument === true;
 
   class BingHelper {
     /** @type {number} */
@@ -248,8 +250,14 @@ const textToSpeech = (function () {
     constructor() {
       /** @type {MediaElementAudioSourceNode[]} */
       this.sources = [];
-      if ("AudioContext" in window) {
-        this.audioCtx = new AudioContext();
+      const AudioContextConstructor =
+        typeof AudioContext !== "undefined"
+          ? AudioContext
+          : typeof webkitAudioContext !== "undefined"
+          ? webkitAudioContext
+          : null;
+      if (AudioContextConstructor) {
+        this.audioCtx = new AudioContextConstructor();
         this.audioCtx.suspend();
         this.gainNode = this.audioCtx.createGain();
         this.gainNode.gain.value = 1;
@@ -592,6 +600,8 @@ const textToSpeech = (function () {
 
   // Listen for messages coming from contentScript or other scripts.
   chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
+    if (isOffscreenDocument && request.target !== offscreenTarget) return;
+
     if (request.action === "textToSpeech") {
       if (twpConfig.get("textToSpeechService") === "bing") {
         bingService

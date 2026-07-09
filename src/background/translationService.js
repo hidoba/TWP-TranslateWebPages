@@ -1144,27 +1144,32 @@ const translationService = (function () {
         function cbTransformResponse(result, dontSortResults) {
           const resultArray = [];
 
-          const parser = new DOMParser();
-          const doc = parser.parseFromString(result, "text/html");
+          function htmlToText(html) {
+            return Utils.unescapeHTML(html.replace(/<[^>]*>/g, ""));
+          }
+
           let currText = "";
-          doc.body.childNodes.forEach((node) => {
+          let lastIndex = 0;
+          const tagRegex = /<b(\d+)>([\s\S]*?)<\/b\1>/gi;
+          let node;
+          while ((node = tagRegex.exec(result))) {
+            currText += htmlToText(result.slice(lastIndex, node.index));
+            const nodeText = htmlToText(node[2]);
+
             if (dontSortResults) {
-              if (node.nodeName == "#text") {
-                currText += node.textContent;
-              } else {
-                resultArray.push(currText + node.textContent);
-                currText = "";
-              }
+              resultArray.push(currText + nodeText);
+              currText = "";
             } else {
-              if (node.nodeName == "#text") {
-                currText += node.textContent;
-              } else {
-                const id = parseInt(node.nodeName.slice(1)) - 10;
-                resultArray[id] = currText + node.textContent;
-                currText = "";
-              }
+              const id = parseInt(node[1]) - 10;
+              resultArray[id] = currText + nodeText;
+              currText = "";
             }
-          });
+            lastIndex = node.index + node[0].length;
+          }
+
+          if (resultArray.length === 0 && result) {
+            resultArray.push(htmlToText(result));
+          }
 
           return resultArray;
         },
