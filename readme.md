@@ -19,8 +19,12 @@ Translate your page in real time using Google, Bing or Yandex.
   4. On the add-ons website, search for **TWP**.
   5. Install the **TWP - Translate For Mobile** extension.
 
-### Chrome, Edge and Brave
-- The extension will be officially released for these browsers in the future.
+### Chrome / Brave / Edge / Vivaldi / Opera
+- Supported browsers: Chromium-based browsers version 109 or newer.
+- Download `TWP_<version>_Chromium.zip` from the GitHub release assets.
+- Unzip the file, open the browser extensions page, enable developer mode, and use **Load unpacked** to select the unzipped extension folder.
+- The Chromium package uses Manifest V3 for current Chromium-family browsers.
+- The package is unsigned and installed manually, so it will not update the old self-hosted/registry-installed extension in place.
 - If you installed the extension in these browsers previously through a registry modification, please undo those changes.\
 Note: If you want to undo registry changes, download and run this [twp-registry-uninstall-self.reg](https://raw.githubusercontent.com/FilipePS/Traduzir-paginas-web/master/dist/chromium/twp-registry-uninstall-self.reg). If you want a deeper removal download and run this other file [twp-registry-uninstall-all.reg](https://raw.githubusercontent.com/FilipePS/Traduzir-paginas-web/master/dist/chromium/twp-registry-uninstall-all.reg)
 
@@ -65,4 +69,7 @@ The pages are translated using the Google or Yandex translation engine (you choo
 Some pages like [support.mozilla.org](https://support.mozilla.org/) and [addons.mozilla.org](http://addons.mozilla.org/) will not be translated. For security reasons, the browser blocks extensions from accessing these sites.
 
 ## Build instructions
-- You can see all the build instructions in the [build-instructions.md](build-instructions.md) file.
+- Install dependencies with `npm install`.
+- Build all release packages with `npm run build`.
+- The Chromium package for Chrome, Brave, Edge, Vivaldi, and Opera is generated at `build/TWP_<version>_Chromium.zip`.
+- You can see more build details in the [build-instructions.md](build-instructions.md) file.

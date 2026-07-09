@@ -15,3 +15,10 @@
 - To make the build that adds compatibility with previous versions of browsers, run the command `npm run build:local-sourcemaps`.
 - The files I sent for review were built with the `npm run build` command. The difference is that the **source-maps** were outside the extension folder, with a configured Github URL. I upload the source-maps to this repository: https://github.com/FilipePS/TWP---Source-Maps
 - The reason I use remote **source-maps** is to reduce the download size of the extension, but still allow users to easily debug without needing the original source code.
+
+## Build outputs
+
+- `build/TWP_<version>_Firefox.zip` is the Firefox package.
+- `build/TWP_<version>_Firefox_selfhosted.zip` is the self-hosted Firefox package.
+- `build/TWP_<version>_Chromium.zip` is the Chromium-family package for Chrome, Brave, Edge, Vivaldi, and Opera.
+- The Chromium-family package requires a browser based on Chromium 109 or newer.
