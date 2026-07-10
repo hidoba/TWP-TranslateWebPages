@@ -60,7 +60,7 @@ The pages are translated using the Google, Bing, Yandex, or OpenRouter translati
 
 OpenRouter is optional and disabled by default. To use it, open the extension options, go to the experimental settings, and add your own OpenRouter API key. After the key is added, OpenRouter becomes available in both **Page translation service** and **Text Translation Service**.
 
-OpenRouter uses the `openrouter/auto` model by default, but you can enter a different OpenRouter model ID in the settings. Page translation requests use structured JSON output so translated fragments can be matched back to the original page text in the correct order. API usage may be billed by OpenRouter depending on your account and selected model.
+OpenRouter uses the `google/gemini-3-flash-preview` model by default, but you can enter a different OpenRouter model ID in the settings. Page translation requests use structured JSON output so translated fragments can be matched back to the original page text in the correct order. API usage may be billed by OpenRouter depending on your account and selected model.
 
 **And how's my privacy?**
 

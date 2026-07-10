@@ -1536,7 +1536,7 @@ const translationService = (function () {
    * @param {string} model
    * @returns {Service} openrouterService
    */
-  const createOpenRouterService = (apiKey, model = "openrouter/auto") => {
+  const createOpenRouterService = (apiKey, model = "google/gemini-3-flash-preview") => {
     const openrouterTranslationSchema = {
       type: "object",
       properties: {
