@@ -1586,7 +1586,7 @@ twpConfig
       const openrouter = {
         name: "openrouter",
         apiKey: $("#openrouterKEY").value.trim(),
-        model: $("#openrouterModel").value.trim() || "openrouter/auto",
+        model: $("#openrouterModel").value.trim() || "google/gemini-3-flash-preview",
       };
       try {
         if (openrouter.apiKey.length < 10) {
@@ -1665,7 +1665,7 @@ twpConfig
 
       updateServiceSelector(twpConfig.get("enabledServices"));
       $("#openrouterKEY").value = "";
-      $("#openrouterModel").value = "openrouter/auto";
+      $("#openrouterModel").value = "google/gemini-3-flash-preview";
       $("#openrouterApiResponse").textContent = "";
     };
 
@@ -1674,10 +1674,10 @@ twpConfig
       .find((cs) => cs.name === "openrouter");
     if (openrouter) {
       $("#openrouterKEY").value = openrouter.apiKey;
-      $("#openrouterModel").value = openrouter.model || "openrouter/auto";
+      $("#openrouterModel").value = openrouter.model || "google/gemini-3-flash-preview";
       updateServiceSelector(twpConfig.get("enabledServices"));
     } else {
-      $("#openrouterModel").value = "openrouter/auto";
+      $("#openrouterModel").value = "google/gemini-3-flash-preview";
     }
 
     $("#showMobilePopupOnDesktop").onchange = (e) => {
